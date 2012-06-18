@@ -1,0 +1,23 @@
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %r [%t] %-p %c %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="logfile" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="logs/Finance/application.log"/>
+		<param name="MaxFileSize" value="81920KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %r [%t] %-p %c %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="bits-console"/>
+		<appender-ref ref="bits-logfile" />
+	</root>
+</log4j:configuration>
