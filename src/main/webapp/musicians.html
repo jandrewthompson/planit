@@ -1,0 +1,19 @@
+<input type="text" ng-model="search" class="search-query" placeholder="Search">
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th><a href="#/new"><i class="icon-plus-sign"></i></a></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="musician in musicians | filter:search | orderBy:'name'">
+    <td><a href="#/list/{{musician.id}}" target="_blank">{{musician.name}}</a></td>
+    <td>{{musician.description}}</td>
+    <td>
+      <a href="#/edit/{{musician.id}}"><i class="icon-pencil"></i></a>
+    </td>
+  </tr>
+  </tbody>
+</table>
