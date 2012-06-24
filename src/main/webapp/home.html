@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="planitmod">
+<html lang="en" ng-app='planitmod'>
 <head>
 <meta charset="utf-8">
-<title>PlanIt! - Resources</title>
+<title>PlanIt! - EWO Service Planner</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -16,6 +16,10 @@
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
+}
+
+td {
+ padding: 5px;
 }
 </style>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -39,7 +43,9 @@ body {
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li class="active"><a href="#/">Home</a></li>
-						<li><a href="#/resources">Resources</a></li>
+						<li><a href="#/people">People</a></li>
+						<li><a href="#/songs">Songs</a></li>
+						<li><a href="#/schedules">Schedules</a></li>
 						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</div>
@@ -50,44 +56,7 @@ body {
 
 	<div class="container">
 
-		<div >
-			<!-- Main hero unit for a primary marketing message or call to action -->
-			<div class="hero-unit">
-				<h1>PlanIt!</h1>
-				<p>This is a place to plan your weekly services, and other
-					events.</p>
-				<p>
-					<a class="btn btn-primary btn-large">Get Started &raquo;</a>
-				</p>
-			</div>
-
-			<!-- Example row of columns -->
-			<div class="row">
-				<div class="span4">
-					<h2>Songs</h2>
-					<p>Maintain your repertoire and stash your arrangements</p>
-					<p>
-						<a class="btn" href="#">View details &raquo;</a>
-					</p>
-				</div>
-				<div class="span4">
-					<h2>Resources</h2>
-					<p>Maintain your available musicians, technical staff and
-						speakers/preachers</p>
-					<p>
-						<a class="btn" href="#/resources">View details &raquo;</a>
-					</p>
-				</div>
-				<div class="span4">
-					<h2>Events</h2>
-					<p>Add or change a service schedule</p>
-					<p>
-						<a class="btn" href="#">View details &raquo;</a>
-					</p>
-				</div>
-			</div>
-
-		</div>
+		
 
 		<div ng-view></div>
 

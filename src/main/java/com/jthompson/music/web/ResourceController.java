@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -22,6 +23,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.jthompson.music.domain.Musician;
+import com.jthompson.music.service.PeopleServiceImpl;
+import com.mongodb.DB;
 
 @Stateless
 @Path("/musicians")
@@ -31,7 +34,23 @@ public class ResourceController
 	@PersistenceContext(unitName="planit") 
 	private EntityManager em; 
 
+	@Inject
+	private PeopleServiceImpl service;
 	 
+	@GET
+	@Path("/test") 
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTest()
+	{
+		List<Musician> result = service.getMusicians();
+		
+		MusiciansWrapper wrap = new MusiciansWrapper(result);
+		
+		return Response.ok(wrap).build();
+		
+	}
+	
+	
 	@GET
 	@Path("/") 
 	@Produces(MediaType.APPLICATION_JSON)
