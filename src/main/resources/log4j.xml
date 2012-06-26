@@ -17,7 +17,7 @@
 	
 	<root>
 		<priority value="debug" />
-		<appender-ref ref="bits-console"/>
-		<appender-ref ref="bits-logfile" />
+		<appender-ref ref="console"/>
+		<appender-ref ref="logfile" />
 	</root>
 </log4j:configuration>

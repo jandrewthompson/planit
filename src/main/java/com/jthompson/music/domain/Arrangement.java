@@ -25,6 +25,8 @@ public class Arrangement extends Schedulable
 	
 	private String licenseString;
 	
+	private Integer lengthMinutes;
+	
 	@Column(name="pdfData")
 	private Byte[] pdfBytes;
 
@@ -68,6 +70,13 @@ public class Arrangement extends Schedulable
 		this.pdfBytes = pdfBytes;
 	}
 
+	public Integer getLengthMinutes() {
+		return lengthMinutes;
+	}
+	public void setLengthMinutes(Integer lengthMinutes) {
+		this.lengthMinutes = lengthMinutes;
+	}
+	
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);

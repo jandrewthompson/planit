@@ -23,32 +23,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.jthompson.music.domain.Musician;
-import com.jthompson.music.service.PeopleServiceImpl;
-import com.mongodb.DB;
+import com.jthompson.music.service.PersonServiceImpl;
 
 @Stateless
 @Path("/musicians")
 public class ResourceController 
 {
 
-	@PersistenceContext(unitName="planit") 
-	private EntityManager em; 
-
 	@Inject
-	private PeopleServiceImpl service;
-	 
-	@GET
-	@Path("/test") 
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getTest()
-	{
-		List<Musician> result = service.getMusicians();
-		
-		MusiciansWrapper wrap = new MusiciansWrapper(result);
-		
-		return Response.ok(wrap).build();
-		
-	}
+	private PersonServiceImpl personService;
+	
 	
 	
 	@GET
@@ -57,7 +41,7 @@ public class ResourceController
 	public Response getMusicians()
 	{
 		
-		List<Musician> result = em.createQuery("select m from Musician m").getResultList();
+		List<Musician> result = personService.getMusicians();
 		
 		MusiciansWrapper wrap = new MusiciansWrapper(result);
 		
@@ -70,7 +54,7 @@ public class ResourceController
 	public Response getMusician(@PathParam("id") Integer id)
 	{
 		
-		Musician result = em.find(Musician.class, id);
+		Musician result = personService.getMusician(id);
 		
 		return Response.ok( result ).build();
 	}
@@ -82,10 +66,9 @@ public class ResourceController
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Musician addMusician(Musician m)
 	{
-		em.persist(m);
 		
-		return m;
-		
+		return personService.addMusician(m);
+				
 	}
 	
 	@POST
@@ -97,9 +80,7 @@ public class ResourceController
 		m.setName(name);
 		m.setDescription(description);
 		
-		em.persist(m);
-		
-		return m;
+		return personService.addMusician(m);
 		
 	}  
 	
@@ -107,20 +88,9 @@ public class ResourceController
 	@Path("/delete/{id}")
 	public Musician deleteMusician(@PathParam("id") Integer musicianId)
 	{
-		em.createQuery("delete from Musician m where m.id = :musicianId")
-				.setParameter("musicianId", musicianId)
-				.executeUpdate();
-		
-		return null;
+		return personService.deleteMusician(musicianId);
 	}
 	
-	public EntityManager getEm() {
-		return em;
-	}
-
-	public void setEm(EntityManager em) {
-		this.em = em;
-	}
 	
 	@XmlRootElement()
 	@XmlAccessorType(XmlAccessType.FIELD)
