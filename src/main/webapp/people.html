@@ -11,10 +11,10 @@
 		<tr>
 			<th>Name</th>
 			<th>Description</th>
-			<th><a href="#/new"><i class="icon-plus-sign"></i></a></th>
+			<th><a href="#/people/create"><i class="icon-plus-sign"></i></a></th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody >
 		<h3>Musicians</h3>
 		<tr ng-repeat="musician in musicians | filter:search | orderBy:'name'">
 			<td>
@@ -26,6 +26,12 @@
 			<td>
 				<a href="#/people/edit/{{musician.id}}"><i class="icon-pencil"></i></a>
 			</td>
+			<td>
+				<a ng-click="deleteMusician(musician)"><i class="icon-remove"></i></a>
+			 	
+			</td>
 		</tr>
 	</tbody>
+	
 </table>
+	

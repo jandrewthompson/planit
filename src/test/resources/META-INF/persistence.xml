@@ -16,7 +16,9 @@
         <class>com.jthompson.music.domain.Song</class>
         <class>com.jthompson.music.domain.Technician</class>
         
-        <class>com.jthompson.music.domain.EventItem</class>
+        <class>com.jthompson.music.domain.Instrument</class>
+        <class>com.jthompson.music.domain.Speaker</class>
+        
         
                 
          <properties>
@@ -26,7 +28,7 @@
         	<property name="hibernate.format_sql" value="true"/>
          
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:./src/test/resources/planit.db"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value="sa"/>
 

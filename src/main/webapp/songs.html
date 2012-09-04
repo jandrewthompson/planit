@@ -1,1 +1,32 @@
-<div>here's some songs</div>
+<div class="page-header">
+	<h1>Songs</h1>
+	<p>Maintain your songs and arrangements</p>
+</div>
+
+<input type="text" ng-model="search" class="search-query"
+	placeholder="Search">
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th><a href="#/songs/create"><i class="icon-plus-sign"></i></a></th>
+		</tr>
+	</thead>
+	<tbody>
+		<h3>Songs</h3>
+		<tr ng-repeat="song in songs | filter:search | orderBy:'name'">
+			<td>
+				<a href="#/song/{{song.id}}" target="_blank">{{song.name}}</a>
+			</td>
+			<td>
+				{{song.description}}
+			</td>
+			<td>
+				<a href="#/songs/edit/{{song.id}}"><i class="icon-pencil"></i></a>
+			</td>
+		</tr>
+	</tbody>
+	
+</table>
+	

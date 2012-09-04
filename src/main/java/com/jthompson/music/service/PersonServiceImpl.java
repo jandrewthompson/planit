@@ -6,8 +6,16 @@ import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.ValidatorContext;
+import javax.validation.spi.ConfigurationState;
 import javax.ws.rs.PathParam;
 
+import org.hibernate.Hibernate;
+import org.hibernate.validator.HibernateValidator;
+import org.hibernate.validator.engine.ConfigurationImpl;
+import org.hibernate.validator.engine.ValidatorContextImpl;
+
+import com.jthompson.music.domain.Instrument;
 import com.jthompson.music.domain.Musician;
 
 @Stateless
@@ -22,8 +30,11 @@ public class PersonServiceImpl {
 	public List<Musician> getMusicians()
 	{
 		
-		List<Musician> result = em.createQuery("select m from Musician m").getResultList();
+		List<Musician> result = em.createNamedQuery(
+				Musician.FIND_ALL, Musician.class)
+				.getResultList();
 		
+	
 		return result;
 	}
 	
@@ -31,16 +42,32 @@ public class PersonServiceImpl {
 	public Musician getMusician(@PathParam("id") Integer id)
 	{
 		
-		Musician result = em.find(Musician.class, id);
+		Musician result = em.createNamedQuery(Musician.FIND_BY_ID, Musician.class)
+							.setParameter("musicianId", id)
+							.getSingleResult();
+		
+		return result;
+	}
+	
+	public List<Musician> getMusiciansByInstrument(Instrument instrument)
+	{
+		
+		List<Musician> result = em.createNamedQuery(Musician.FIND_BY_INSTRUMENT,
+				Musician.class)
+				.setParameter("instrument", instrument.getName())
+				.getResultList();
 		
 		return result;
 	}
 	
 	
 
-	public Musician addMusician(Musician m)
+	public Musician saveMusician(Musician m)
 	{
-		em.persist(m);
+		//em.persist(m);
+		
+		System.out.println("Adding musician: " + m.toString());
+		em.merge(m);
 		
 		return m;
 		
@@ -49,7 +76,7 @@ public class PersonServiceImpl {
 	
 	public Musician deleteMusician(Integer musicianId)
 	{
-		em.createQuery("delete from Musician m where m.id = :musicianId")
+		em.createNamedQuery(Musician.DELETE_BY_ID)
 				.setParameter("musicianId", musicianId)
 				.executeUpdate();
 		
@@ -69,5 +96,8 @@ public class PersonServiceImpl {
 	public void setEm(EntityManager em) {
 		this.em = em;
 	}
+	
+	
+
 	
 }

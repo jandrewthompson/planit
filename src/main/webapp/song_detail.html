@@ -1,0 +1,36 @@
+<h2>{{editHeading}}</h2>
+
+<div class="row">
+	<div class="span3">
+		
+			<div>
+				<label for="name">Name: </label> 
+				<input type="text" name="name" ng-model="song.name" /> 
+				<label for="description">Description:</label>
+				<textarea name="description" ng-model="song.description"></textarea>
+				<label for="composer">Composer: </label> 
+				<input type="text" name="composer" ng-model="song.composer" /> 
+				<label for="ccli">CCLI#:</label>
+				<input type="text" name="ccli" ng-model="song.ccliLicenseNumber" /> 
+				
+			</div>
+	</div>
+	<div class="span4">
+		<ul>
+			<ul>
+			  <li ng-repeat="arr in song.arrangements">
+			  	{{arr.name}}
+			  	<a href="#/song/{{song.id}}/arrangement/{{arrangement.id}}" target="_blank">{{song.name}}</a>
+			  </li>
+			</ul>
+		</ul>
+	</div>
+
+</div>
+<div class="row">
+	<div class="span3">
+	
+		<button class="btn btn-info btn-small" ng-click="cancel()">Cancel</button>
+		<button class="btn btn-primary btn-small" ng-click="save()">Save</button>
+	</div>
+</div>

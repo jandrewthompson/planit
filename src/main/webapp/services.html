@@ -1,0 +1,87 @@
+
+<div id="leftbar" style="overflow: none;">
+
+		<div id="tabs" style="overflow: none;;">
+			<ul>
+				<li><a href="#tabs-songs">Songs</a></li>
+				<li><a href="#tabs-people">People</a></li>
+			</ul>
+			
+			<div id="tabs-songs">
+				<ul ng-repeat="song in songs" class="nav nav-pills nav-stacked">
+					<li class="">
+					<a href="#">{{song.name}}</a>
+					</li>
+				</ul>
+			</div>
+			<div id="tabs-people">
+				<ul ng-repeat="musician in musicians" class="unstyled">
+					<li>
+						{{musician.name}}
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="datepicker"></div>
+
+</div>
+	<div class="maincontent" style="float:right;">
+		<p>Here's some body content</p>
+		<div id="droppable" class="ui-widget-header">
+	<p>Drop here</p>
+</div>
+		<ul>
+			<li ng-repeat="instrument in instruments"><input
+				type="checkbox" name="instrument" value="{{instrument.id}}"
+				ng-model="ischecked" ng-checked="hasInstrument(instrument)"
+				ng-change="change(instrument,ischecked)">{{instrument.name}}
+			</li>
+		</ul>
+		<div class="row">
+			<div class="span2">
+		
+				<button class="btn btn-info btn-small" ng-click="cancel()">Cancel</button>
+				<button class="btn btn-primary btn-small" ng-click="save()">Save</button>
+			</div>
+		</div>
+	</div>
+<script>
+	$(function() {
+		$( "#tabs" ).tabs();
+		$( "#datepicker" ).datepicker();
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+		doSizing();
+		
+		$( ".draggable" ).draggable();
+		$( "#droppable" ).droppable({
+			drop: function( event, ui ) {
+				$( this )
+					.addClass( "ui-state-highlight" )
+					.find( "p" )
+						.html( "Dropped!" );
+			}
+		});
+	});
+	
+	
+	
+	$(window).resize(function() {
+	  	doSizing();
+	});
+	
+	function doSizing()
+	{
+		var minHeight = 800;
+		
+		if($(window).height()  > minHeight) {
+			$( "#leftbar" ).css('height', $(window).height() - 150);
+			$( "#tabs").css('height', $(window).height() - 380);
+		} else {
+			$( "#leftbar" ).css('height', minHeight - 150);
+			$( "#tabs").css('height', minHeight - 380);
+		}
+	}
+	
+</script>

@@ -1,6 +1,7 @@
 package com.jthompson.music.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -38,9 +39,35 @@ public class Event
 	private String description;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@OrderColumn(name="item_order")
 	private List<Schedulable> items = new ArrayList<Schedulable>();
 
+	public void moveUp(Schedulable item)
+	{
+
+		int index = items.indexOf(item);
+		
+		if(index > 0)
+			Collections.rotate(items.subList(index-1, (index+1)), -1);
+		else 
+			System.out.println("Can't move up");
+	}
+	
+	public void moveDown(Schedulable item)
+	{
+
+		int index = items.indexOf(item);
+		
+		if(index >= 0 && index < items.size() -1 )
+			Collections.rotate(items.subList(index, (index+2)), -1);
+		else 
+			System.out.println("Can't move down");
+	}
+	
+	public void addItem(Schedulable item)
+	{
+		items.add(item);
+	}
+	
 	public Integer getId() {
 		return id;
 	}

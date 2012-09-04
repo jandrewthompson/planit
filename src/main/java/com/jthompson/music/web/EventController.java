@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.jthompson.music.domain.Event;
+import com.jthompson.music.domain.Schedulable;
 
 @Stateless
 @Path("/events")
@@ -78,6 +79,18 @@ public class EventController
 				.executeUpdate();
 		
 		return null;
+	}
+	
+	@GET
+	@Path("/schedulables")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSchedulables()
+	{
+		
+		List<Schedulable> result = em.createQuery("select s from Schedulable s", Schedulable.class).getResultList();
+		
+		return Response.ok( result.get(0) ).build();
+		
 	}
 	
 //	@POST

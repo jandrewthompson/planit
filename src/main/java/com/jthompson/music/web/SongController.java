@@ -40,7 +40,10 @@ public class SongController
 	public Response getSongs()
 	{
 		
-		List<Song> result = em.createQuery("select s from Song s").getResultList();
+		List<Song> result = em.createQuery(
+						"select distinct s from Song s left join fetch s.arrangements arr", 
+						Song.class)
+				.getResultList();
 		
 		SongWrapper wrap = new SongWrapper(result);
 		
@@ -61,11 +64,11 @@ public class SongController
 	
 	
 	@POST
-	@Path("/add")
+	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Song addSong(Song s)
 	{
-		em.persist(s);
+		em.merge(s);
 		
 		return s;
 		
@@ -84,9 +87,9 @@ public class SongController
 	}
 	
 	@POST
-	@Path("/{songId}/arrangement/add")
+	@Path("/{songId}/arrangement/save")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Arrangement addSongArrangement(
+	public Arrangement saveSongArrangement(
 			@PathParam("songId") Integer songId,
 			Arrangement arr)
 	{
@@ -95,6 +98,17 @@ public class SongController
 		song.getArrangements().add(arr);
 		
 		em.persist(song);
+		
+		return arr;
+	}
+	
+	@GET
+	@Path("/{songId}/arrangement/{arrangementId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Arrangement findArrangement(
+			@PathParam("arrangementId") Integer arrangementId)
+	{
+		Arrangement arr = em.find(Arrangement.class, arrangementId);
 		
 		return arr;
 	}
