@@ -50,7 +50,6 @@ public class PersonControllerTest extends AbstractRollbackJpaRepository
 		em.persist(song);
 		
 		
-		
 		event.addItem(song);
 		event.addItem(song2);
 		event.addItem(song3);
@@ -84,7 +83,7 @@ public class PersonControllerTest extends AbstractRollbackJpaRepository
 		
 		System.out.println(event);
 		
-		Schedulable theItem = event.getItems().get(1);
+		Schedulable theItem = event.getSchedulables().get(1);
 		
 		event.moveUp(theItem);
 		

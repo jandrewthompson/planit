@@ -3,7 +3,9 @@ package com.jthompson.music.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,16 +15,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import lombok.Data;
+import lombok.ToString;
 
+@Data
+@ToString
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,17 +40,21 @@ public class Event
 	private Date dateTime;
 	
 	private String description;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Schedulable> items = new ArrayList<Schedulable>();
+//	
+//	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+//	private List<Song> items = new ArrayList<Song>();
 
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	private List<Schedulable> schedulables = new ArrayList<Schedulable>();
+
+	
 	public void moveUp(Schedulable item)
 	{
 
-		int index = items.indexOf(item);
+		int index = schedulables.indexOf(item);
 		
 		if(index > 0)
-			Collections.rotate(items.subList(index-1, (index+1)), -1);
+			Collections.rotate(schedulables.subList(index-1, (index+1)), -1);
 		else 
 			System.out.println("Can't move up");
 	}
@@ -55,54 +62,39 @@ public class Event
 	public void moveDown(Schedulable item)
 	{
 
-		int index = items.indexOf(item);
+		int index = schedulables.indexOf(item);
 		
-		if(index >= 0 && index < items.size() -1 )
-			Collections.rotate(items.subList(index, (index+2)), -1);
+		if(index >= 0 && index < schedulables.size() -1 )
+			Collections.rotate(schedulables.subList(index, (index+2)), -1);
 		else 
 			System.out.println("Can't move down");
 	}
-	
-	public void addItem(Schedulable item)
+
+	public void addItem(Song item) 
 	{
-		items.add(item);
+		Schedulable s = new Schedulable();
+
+		s.setSong((Song) item);
+		getSchedulables().add(s);
+	}
+
+	public void addItem(Text item) 
+	{
+		Schedulable s = new Schedulable();
+
+		s.setText((Text) item);
+		getSchedulables().add(s);
+	}
+
+	public void addItem(Speaker item) 
+	{
+		Schedulable s = new Schedulable();
+
+		s.setSpeaker((Speaker) item);
+		getSchedulables().add(s);
+		
 	}
 	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Date getDateTime() {
-		return dateTime;
-	}
-
-	public void setDateTime(Date dateTime) {
-		this.dateTime = dateTime;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public List<Schedulable> getItems() {
-		return items;
-	}
-
-	public void setItems(List<Schedulable> items) {
-		this.items = items;
-	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-	}
 	
 }

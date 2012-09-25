@@ -8,6 +8,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         
         <class>com.jthompson.music.domain.Event</class>
+        <class>com.jthompson.music.domain.Text</class>
         <class>com.jthompson.music.domain.Resource</class> 
         <class>com.jthompson.music.domain.Schedulable</class>
         <class>com.jthompson.music.domain.Musician</class>

@@ -54,7 +54,7 @@ public class PersonServiceImpl {
 		
 		List<Musician> result = em.createNamedQuery(Musician.FIND_BY_INSTRUMENT,
 				Musician.class)
-				.setParameter("instrument", instrument.getName())
+				.setParameter("instrumentName", instrument.getName())
 				.getResultList();
 		
 		return result;

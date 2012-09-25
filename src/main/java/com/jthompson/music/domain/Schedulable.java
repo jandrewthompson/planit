@@ -1,41 +1,29 @@
 package com.jthompson.music.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 
+import lombok.Data;
+
+@Data
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Schedulable 
+public class Schedulable 
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-
-	private String name;
 	
-	private String description;
+	@ManyToOne(cascade=CascadeType.ALL)
+	private Song song;
 	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@ManyToOne(cascade=CascadeType.ALL)
+	private Text text;
 	
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	@ManyToOne(cascade=CascadeType.ALL)
+	private Speaker speaker;
+	
 }
