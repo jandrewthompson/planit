@@ -54,7 +54,7 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.Reflection;
 import com.jthompson.music.domain.Musician;
-import com.jthompson.music.service.PersonServiceImpl;
+import com.jthompson.music.service.PersonService;
 import com.sun.corba.ee.spi.orbutil.logex.Log;
 import com.sun.jersey.server.impl.container.servlet.JerseyServletContainerInitializer;
 
@@ -64,7 +64,7 @@ import com.sun.jersey.server.impl.container.servlet.JerseyServletContainerInitia
 public class ResourceController 
 {
 	@Inject
-	private PersonServiceImpl personService;
+	private PersonService personService;
 	
 	@Inject
 	private Validator validator;
@@ -158,7 +158,7 @@ public class ResourceController
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getMusician(@PathParam("id") Integer id)
+	public Response getMusician(@PathParam("id") String id)
 	{
 		
 		Musician result = personService.getMusician(id);
@@ -205,7 +205,7 @@ public class ResourceController
 	
 	@DELETE
 	@Path("/{id}")
-	public Musician deleteMusician(@PathParam("id") Integer musicianId)
+	public Musician deleteMusician(@PathParam("id") String musicianId)
 	{
 		return personService.deleteMusician(musicianId);
 	}

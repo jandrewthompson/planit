@@ -15,19 +15,19 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-@Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Arrangement 
+@Document(collection="arrangements")
+public class Arrangement implements Schedulable, Displayable
 {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private String id;
 
 	private String name;
 	
@@ -42,13 +42,20 @@ public class Arrangement
 	private String licenseString;
 	
 	private Integer lengthSeconds;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@Column(name="ARR_KEYS")
+
 	private Set<String> keys = new HashSet<String>();
 	
-	@Column(name="pdfData")
 	private Byte[] pdfBytes;
+	
+	public Integer getDuration()
+	{
+		return lengthSeconds;
+	}
+	
+	@Override
+	public String display() {
+		return description;
+	}
 
 	
 }

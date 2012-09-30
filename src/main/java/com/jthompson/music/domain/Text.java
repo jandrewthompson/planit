@@ -16,7 +16,7 @@ import lombok.ToString;
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Text
+public class Text implements Schedulable, Displayable
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -25,4 +25,11 @@ public class Text
 	private String name;
 	
 	private String description;
+	
+	private Integer duration;
+	
+	@Override
+	public String display() {
+		return description;
+	}
 }

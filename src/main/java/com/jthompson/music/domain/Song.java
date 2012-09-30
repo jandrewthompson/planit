@@ -15,20 +15,22 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 import lombok.ToString;
 
-@Entity
 @Data
 @ToString
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Song implements Displayable
+@Document(collection="songs")
+@XmlSeeAlso(Schedulable.class)
+public class Song implements Schedulable, Displayable
 {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private String id;
 
 	private String name;
 	
@@ -41,9 +43,9 @@ public class Song implements Displayable
 	private Integer ccliLicenseNumber;
 	
 	private Integer lengthSeconds;
+
+	private Integer duration;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
-	@JoinTable(name="Song_Arrangement")
 	private Set<Arrangement> arrangements = new HashSet<Arrangement>();
 
 	@Override

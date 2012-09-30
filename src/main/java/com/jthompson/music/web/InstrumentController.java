@@ -47,7 +47,7 @@ public class InstrumentController
 	@GET
 	@Path("/{id}") 
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getInstrument(@PathParam("id") Integer id)
+	public Response getInstrument(@PathParam("id") String id)
 	{
 
 		System.out.println("Inside /");

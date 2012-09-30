@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -21,29 +22,30 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement; 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.data.mongodb.core.MongoOperations;
+
 import com.jthompson.music.domain.Arrangement;
 import com.jthompson.music.domain.Musician;
 import com.jthompson.music.domain.Song;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Stateless
 @Path("/songs")
+@Produces(MediaType.APPLICATION_JSON)
 public class SongController 
 {
 
-	@PersistenceContext(unitName="planit") 
-	private EntityManager em; 
+	@Inject
+	private MongoOperations mongoOps;
 
 	 
 	@GET
 	@Path("/") 
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSongs()
 	{
 		
-		List<Song> result = em.createQuery(
-						"select distinct s from Song s left join fetch s.arrangements arr", 
-						Song.class)
-				.getResultList();
+		List<Song> result = mongoOps.findAll(Song.class);
 		
 		SongWrapper wrap = new SongWrapper(result);
 		
@@ -53,10 +55,10 @@ public class SongController
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSong(@PathParam("id") Integer id)
+	public Response getSong(@PathParam("id") String id)
 	{
 		
-		Song result = em.find(Song.class, id);
+		Song result = mongoOps.findOne(query(where("_id").is(id)), Song.class);
 		
 		return Response.ok( result ).build();
 	}
@@ -64,11 +66,11 @@ public class SongController
 	
 	
 	@POST
-	@Path("/save")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Song addSong(Song s)
 	{
-		em.merge(s);
+		mongoOps.save(s);
 		
 		return s;
 		
@@ -76,12 +78,10 @@ public class SongController
 	
 	
 	@DELETE
-	@Path("/delete/{id}")
-	public Song deleteSong(@PathParam("id") Integer songId)
+	@Path("/{id}")
+	public Song deleteSong(@PathParam("id") String songId)
 	{
-		em.createQuery("delete from Song s where s.id = :songId")
-				.setParameter("songId", songId)
-				.executeUpdate();
+		mongoOps.remove(getSong(songId));
 		
 		return null;
 	}
@@ -90,14 +90,14 @@ public class SongController
 	@Path("/{songId}/arrangement/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Arrangement saveSongArrangement(
-			@PathParam("songId") Integer songId,
+			@PathParam("songId") String songId,
 			Arrangement arr)
 	{
-		Song song = em.find(Song.class, songId);
+		Song song = mongoOps.findOne(query(where("_id").is(songId)), Song.class);
 		
 		song.getArrangements().add(arr);
 		
-		em.persist(song);
+		mongoOps.save(song);
 		
 		return arr;
 	}
@@ -106,9 +106,9 @@ public class SongController
 	@Path("/{songId}/arrangement/{arrangementId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Arrangement findArrangement(
-			@PathParam("arrangementId") Integer arrangementId)
+			@PathParam("arrangementId") String arrangementId)
 	{
-		Arrangement arr = em.find(Arrangement.class, arrangementId);
+		Arrangement arr = mongoOps.findOne(query(where("_id").is(arrangementId)), Arrangement.class);
 		
 		return arr;
 	}
@@ -116,33 +116,23 @@ public class SongController
 	@DELETE
 	@Path("/{songId}/delete/{arrId}")
 	public Song deleteArrangement(
-				@PathParam("songId") Integer songId,
-				@PathParam("arrId") Integer arrangementId)
+				@PathParam("songId") String songId,
+				@PathParam("arrId") String arrangementId)
 	{
 		
-		Song song = em.find(Song.class, songId);
-		Arrangement arrangement = em.find(Arrangement.class, arrangementId);
+		Song song = mongoOps.findOne(query(where("_id").is(songId)), Song.class);
+		Arrangement arrangement = mongoOps.findOne(query(where("_id").is(arrangementId)), Arrangement.class);
 		
 		
 		if(null != song)
 		{
 			song.getArrangements().remove(arrangement);			
 		}
-		em.merge(song);
-//		em.createQuery("delete from Arrangement arr where arr.id = :arrId")
-//				.setParameter("arrId", arrangementId)
-//				.executeUpdate();
-//		
+		mongoOps.save(song);
+		
 		return null;
 	}
 	
-	public EntityManager getEm() {
-		return em;
-	}
-
-	public void setEm(EntityManager em) {
-		this.em = em;
-	}
 	
 	@XmlRootElement()
 	@XmlAccessorType(XmlAccessType.FIELD)

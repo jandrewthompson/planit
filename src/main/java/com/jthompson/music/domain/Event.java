@@ -26,25 +26,17 @@ import lombok.ToString;
 
 @Data
 @ToString
-@Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Event 
 {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="eventId")
-	private Integer id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	private String id;
+	
 	private Date dateTime;
 	
 	private String description;
-//	
-//	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-//	private List<Song> items = new ArrayList<Song>();
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Schedulable> schedulables = new ArrayList<Schedulable>();
 
 	
@@ -69,32 +61,6 @@ public class Event
 		else 
 			System.out.println("Can't move down");
 	}
-
-	public void addItem(Song item) 
-	{
-		Schedulable s = new Schedulable();
-
-		s.setSong((Song) item);
-		getSchedulables().add(s);
-	}
-
-	public void addItem(Text item) 
-	{
-		Schedulable s = new Schedulable();
-
-		s.setText((Text) item);
-		getSchedulables().add(s);
-	}
-
-	public void addItem(Speaker item) 
-	{
-		Schedulable s = new Schedulable();
-
-		s.setSpeaker((Speaker) item);
-		getSchedulables().add(s);
-		
-	}
-	
 
 	
 }

@@ -9,16 +9,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-@Entity
-@Table(name="Speaker")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Speaker
+@Document(collection="speakers")
+public class Speaker implements Displayable
 {
 	
 	@Id
@@ -28,6 +29,11 @@ public class Speaker
 	protected String description;
 
 	private String name;
+	
+	@Override
+	public String display() {
+		return description;
+	}
 	
 
 }

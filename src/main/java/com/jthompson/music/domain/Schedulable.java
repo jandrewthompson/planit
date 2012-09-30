@@ -6,24 +6,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.sun.xml.bind.AnyTypeAdapter;
 
 import lombok.Data;
 
-@Data
-@Entity
-public class Schedulable 
+@XmlJavaTypeAdapter(AnyTypeAdapter.class)
+@XmlSeeAlso({Song.class})
+public interface Schedulable 
 {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	private Song song;
+	String getName();
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	private Text text;
+	String getDescription();
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	private Speaker speaker;
-	
+	Integer getDuration();
 }
