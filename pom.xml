@@ -6,6 +6,7 @@
   <packaging>war</packaging>
   <name>PlanIt!</name>
   <description>Plan It!</description>
+	  <!-- test -->
   
   <build>
 		<plugins>
